@@ -19,7 +19,7 @@ const DeleteItem = ({params}) => {
 
     useEffect(()=>{
         const getSingleItem=async()=>{
-    const response=await fetch(`http://localhost:3000/api/item/readsingle/${id}`)
+    const response=await fetch(`${process.env.NEXT_PUBLIC_URL}/api/item/readsingle/${id}`)
     const jsonData=await response.json()
     const singleItem=jsonData.singleItem
     setTitle(singleItem.title)
@@ -34,7 +34,7 @@ getSingleItem()
     const handleSubmit=async(e)=>{
         e.preventDefault()
         try{
-            const response=await fetch(`http://localhost:3000/api/item/delete/${id}`,{
+            const response=await fetch(`${process.env.NEXT_PUBLIC_URL}/api/item/delete/${id}`,{
                 method:"DELETE",
                 headers:{
                     "Accept":"application/json",
