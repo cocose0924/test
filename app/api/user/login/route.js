@@ -13,7 +13,7 @@ export async function POST(request){
         console.log(data)
         if(!error){
             if(reqBody.password===data.password){
-                const secretKey=new TextEncoder().encode("next-market-route-handles")
+                const secretKey=new TextEncoder().encode("next-market-route-handlers")
                 const payload={
                     email:reqBody.email,
                 }

@@ -8,7 +8,7 @@ export async function middleware(request){
         return NextResponse.json({message:"トークンがありません"})
     }
     try{
-        const secretKey=new TextEncoder().encode("next-market-route-handles")
+        const secretKey=new TextEncoder().encode("next-market-route-handlers")
         const decodedJwt=await jwtVerify(token,secretKey)
         console.log("decodedJwt",decodedJwt)
         return NextResponse.next()

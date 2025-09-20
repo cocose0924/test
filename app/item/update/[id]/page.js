@@ -1,11 +1,12 @@
 "use client"
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { use } from 'react'
+import useAuth from '../../../utils/useAuth'
 
 const UpdateItem = ({params}) => {
-    const{id}=use(params)
+    const unwrappedParams = use(params)
     const[title,setTitle]=useState("")
     const[price,setPrice]=useState("")
     const[image,setImage]=useState("")
@@ -13,25 +14,27 @@ const UpdateItem = ({params}) => {
     const[email,setEmail]=useState("")
 
     const router=useRouter()
+    const loginUserEmail=useAuth()
 
     useEffect(()=>{
         const getSingleItem=async()=>{
-    const response=await fetch(`http://localhost:3000/api/item/readsingle/${id}`)
-    const jsonData=await response.json()
-    const singleItem=jsonData.singleItem
-    setTitle(singleItem.title)
-    setPrice(singleItem.price)
-    setImage(singleItem.image)
-    setDescription(singleItem.description)
-    setEmail(singleItem.email)
-}
-getSingleItem()
-    },[id])
+        
+        const response=await fetch(`http://localhost:3000/api/item/readsingle/${unwrappedParams.id}`)
+        const jsonData=await response.json()
+        const singleItem=jsonData.singleItem
+        setTitle(singleItem.title)
+        setPrice(singleItem.price)
+        setImage(singleItem.image)
+        setDescription(singleItem.description)
+        setEmail(singleItem.email)
+        }
+        getSingleItem()
+    },[unwrappedParams.id])
 
     const handleSubmit=async(e)=>{
         e.preventDefault()
         try{
-            const response=await fetch(`http://localhost:3000/api/item/update/${id}`,{
+            const response=await fetch(`http://localhost:3000/api/item/update/${unwrappedParams.id}`,{
                 method:"PUT",
                 headers:{
                     "Accept":"application/json",
@@ -43,7 +46,7 @@ getSingleItem()
                     price:price,
                     image:image,
                     description:description,
-                    email:"dummy@gmail.com"
+                    email:loginUserEmail
                 })
             })
             const jsonData=await response.json()
@@ -53,9 +56,10 @@ getSingleItem()
             alert("アイテム編集失敗")
         }
     }
-  return (
+    if(loginUserEmail===email){
+        return (
     <div>
-      <h1>アイテム編集</h1>
+      <h1 className='page-title'>アイテム編集</h1>
       <form onSubmit={handleSubmit}>
         <input value={title} onChange={(e)=>setTitle(e.target.value)}
         type="text" name="title" placeholder='アイテム名' required/>
@@ -69,6 +73,8 @@ getSingleItem()
       </form>
     </div>
   )
+    }
+  
 }
 
 export default UpdateItem

@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const getSingleItem=async(id)=>{
     console.log(id)
@@ -14,7 +15,7 @@ const ReadSingleItem = async(context) => {
     const singleItem=await getSingleItem(params.id)
     console.log(singleItem)
   return (
-    <div>
+    <div className='grid-container-si'>
         <div>
             <Image src={singleItem.image} width={750} height={500} alt="item-image" priority/>
 
@@ -24,6 +25,10 @@ const ReadSingleItem = async(context) => {
             <h2>￥{singleItem.price}</h2>
             <hr/>
             <p>{singleItem.description}</p>
+            <div>
+                <Link href={`/item/update/${singleItem.id}`}>アイテム編集</Link>
+                <Link href={`/item/delete/${singleItem.id}`}>アイテム削除</Link>
+            </div>
         </div>
       
     </div>

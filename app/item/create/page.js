@@ -2,6 +2,7 @@
 import { useReducer, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import useAuth from '../../utils/useAuth'
 
 const CreateItem = () => {
     const[title,setTitle]=useState("")
@@ -10,6 +11,8 @@ const CreateItem = () => {
     const[description,setDescription]=useState("")
 
     const router=useRouter()
+    const loginUserEmail=useAuth()
+    console.log(loginUserEmail)
 
     const handleSubmit=async(e)=>{
         e.preventDefault()
@@ -36,9 +39,10 @@ const CreateItem = () => {
             alert("アイテム作成失敗")
         }
     }
-  return (
+  if(loginUserEmail){
+return (
     <div>
-      <h1>アイテム作成</h1>
+      <h1 className='page-title'>アイテム作成</h1>
       <form onSubmit={handleSubmit}>
         <input value={title} onChange={(e)=>setTitle(e.target.value)}
         type="text" name="title" placeholder='アイテム名' required/>
@@ -52,6 +56,8 @@ const CreateItem = () => {
       </form>
     </div>
   )
+  }
+  
 }
 
 export default CreateItem
